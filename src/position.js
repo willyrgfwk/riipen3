@@ -69,7 +69,7 @@ class Position {
    * @return {String} The strigified version of the position.
    */
   toString() {
-    return `${this.x}, ${this.y}`;
+    return `${this.x},${this.y}`;
   }
 }
 

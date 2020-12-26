@@ -13,6 +13,7 @@ import Position from './position.js';
  */
 const run = async (map, logFile, yStart = 0) => {
   if (!map) throw new Error('a map is required')
+  if (!logFile) throw new Error('a logFile is required')
 
   // A running tally of the score
   let score = 0;
