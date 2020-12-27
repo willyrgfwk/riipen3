@@ -28,23 +28,23 @@ const resetLogFile = (logFile) => {
   // Keep track of the total score.
   let totalScore = 0;
 
-  // Load all maps
-  const maps = requireDirectory(module, './maps');
+  // Load all mines
+  const mines = requireDirectory(module, './mines');
 
-  // Run each map
-  await Promise.all(Object.keys(maps).map(async (key) => {
-    const map = maps[key].default;
+  // Run each mine
+  await Promise.all(Object.keys(mines).map(async (key) => {
+    const mine = mines[key].default;
 
     const logFile = `./logs/${key}.txt`;
 
     resetLogFile(logFile);
 
-    const mapScore = await runner.run(map, logFile, config.yStart[key] || 0);
-    const valid = await validator.validate(map, logFile, mapScore);
+    const mineScore = await runner.run(mine, logFile, config.yStart[key] || 0);
+    const valid = await validator.validate(mine, logFile, mineScore);
 
     if (valid) {
-      console.log(`Map '${key}' score:`, mapScore);
-      totalScore += mapScore;
+      console.log(`Map '${key}' score:`, mineScore);
+      totalScore += mineScore;
     } else {
       console.log('No cheating!');
     }

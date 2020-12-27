@@ -3,16 +3,16 @@ import fs from 'fs';
 import Position from './position.js';
 
 /**
- * Given a map, runs the miner through the map collecting gold along the way.
+ * Given a mine, runs the miner through the mine collecting gold along the way.
  *
- * @param  {array} map - A n x m multidimensional array respresenting the map.
+ * @param  {array} mine - A n x m multidimensional array respresenting the mine.
  * @param  {string} logFile - A file location where moves of the miner should be logged to.
  * @param  {Number} yStart - The y dimension starting position for the miner.
  *
  * @return {Number} The total gold collected by the miner.
  */
-const run = async (map, logFile, yStart = 0) => {
-  if (!map) throw new Error('a map is required')
+const run = async (mine, logFile, yStart = 0) => {
+  if (!mine) throw new Error('a mine is required')
   if (!logFile) throw new Error('a logFile is required')
 
   // A running tally of the score
@@ -24,10 +24,10 @@ const run = async (map, logFile, yStart = 0) => {
   // Log the starting position because we only log again after each move
   log(logFile, position);
 
-  while(position.x < map[0].length - 1 && position.isValid(map)) {
-    score += map[position.y][position.x];
+  while(position.x < mine[0].length - 1 && position.isValid(mine)) {
+    score += mine[position.y][position.x];
 
-    await move(map, position);
+    await move(mine, position);
 
     log(logFile, position);
   }
@@ -44,15 +44,15 @@ const run = async (map, logFile, yStart = 0) => {
  * This function should run in a reasonable amount of time and should attempt
  * to collect as much gold as possible.
  *
- * Remember, invalid moves, or landing on a "0" on the map will result in the run
+ * Remember, invalid moves, or landing on a "0" on the mine will result in the run
  * completing.
  *
- * @param  {array} map - A n x m multidimensional array respresenting the map.
+ * @param  {array} mine - A n x m multidimensional array respresenting the mine.
  * @param  {object} position - The position of the miner.
  *
  * @return {undefined}
  */
-const move = async (map, position) => {
+const move = async (mine, position) => {
   // TODO: write logic for miner. The current approach is as naive as possible, simply
   // moving the miner to the right.
   position.right();

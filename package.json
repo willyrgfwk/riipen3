@@ -21,7 +21,7 @@
     "url": "git+https://github.com/riipen/gold-mine.git"
   },
   "scripts": {
-    "start": "node -r esm ./index.js"
+    "start": "node -r esm --no-warnings ./index.js"
   },
   "main": "./index.js",
   "engines": {

@@ -4,17 +4,17 @@ import readline from 'readline';
 import Position from './position.js';
 
 /**
- * Given a map, output log file, and a final score, validates that the steps
+ * Given a mine, output log file, and a final score, validates that the steps
  * taken are valid, as well that the final score is correct.
  *
- * @param  {array} map - A n x m multidimensional array respresenting the map.
+ * @param  {array} mine - A n x m multidimensional array respresenting the mine.
  * @param  {string} logFile - A file location where moves of the miner were recorded.
- * @param  {Number} mapScore - The final score to validate against the moves made.
+ * @param  {Number} mineScore - The final score to validate against the moves made.
  *
  * @return {Boolean} Whether the moves made and final score are valid.
  */
-const validate = async (map, logFile, mapScore) => {
-  if (!map) throw new Error('a map is required')
+const validate = async (mine, logFile, mineScore) => {
+  if (!mine) throw new Error('a mine is required')
   if (!logFile) throw new Error('a logFile is required')
 
   const lineReader = readline.createInterface({
@@ -45,21 +45,21 @@ const validate = async (map, logFile, mapScore) => {
       if (!validY.includes(step[1])) valid = false
 
       // They can't go out of bounds
-      if (step[0] > map[0].length -1) valid = false;
-      if (step[1] > map.length -1) valid = false;
+      if (step[0] > mine[0].length -1) valid = false;
+      if (step[1] > mine.length -1) valid = false;
     }
 
     // Breaks out of file reading
     if (!valid) lineReader.close();
 
-    score += map[step[1]][step[0]]
+    score += mine[step[1]][step[0]]
 
     // Move up to the valid position
     position.x = step[0];
     position.y = step[1];
   }
 
-  return valid && mapScore === score;
+  return valid && mineScore === score;
 };
 
 export default {
