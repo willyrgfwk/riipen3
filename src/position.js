@@ -16,35 +16,6 @@ class Position {
   }
 
   /**
-   * Moves the miner's position up and to the right (diagonally).
-   *
-   * @return {undefined}
-   */
-  up() {
-    this.x++;
-    this.y++;
-  }
-
-  /**
-   * Moves the miner's position down and to the right (diagonally).
-   *
-   * @return {undefined}
-   */
-  down() {
-    this.x++;
-    this.y--;
-  }
-
-  /**
-   * Moves the miner's position to the right.
-   *
-   * @return {undefined}
-   */
-  right() {
-    this.x++;
-  }
-
-  /**
    * Verifies that the position is valid on the given map.
    *
    * Invalid positions include:

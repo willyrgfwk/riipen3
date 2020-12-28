@@ -22,33 +22,54 @@ const resetLogFile = (logFile) => {
   fs.closeSync(fs.openSync(logFile, 'w'));
 }
 
+/**
+ * Given a mine, a name, and a logFile, runs the miner through the mine.
+ *
+ * @param  {array} mine - A n x m multidimensional array respresenting the mine.
+ * @param  {string} name - The name of the mine.
+ *
+ * @return {number} The score achieved in the mine.
+ */
+const runMine = async (mine, name) => {
+  const logFile = `./logs/${name}.txt`;
+
+  resetLogFile(logFile);
+
+  const mineScore = await runner.run(mine, logFile, config.yStart[name] || 0);
+  const valid = await validator.validate(mine, logFile, mineScore);
+
+  if (valid) {
+    console.log(`Map '${name}' score:`, mineScore);
+    return mineScore;
+  }
+
+  console.log('No cheating!');
+  return 0;
+}
+
 (async () => {
   console.log('Riipen Gold Miner');
 
   // Keep track of the total score.
   let totalScore = 0;
 
-  // Load all mines
-  const mines = requireDirectory(module, './mines');
+  if (process.argv.slice(2).length > 0) {
+    // Run a single mine
+    const name = process.argv.slice(2)[0];
 
-  // Run each mine
-  await Promise.all(Object.keys(mines).map(async (key) => {
-    const mine = mines[key].default;
+    const mine = require(`./mines/${name}.js`).default;
 
-    const logFile = `./logs/${key}.txt`;
+    totalScore += await runMine(mine, name);
+  } else {
+    // Run all mines
+    const mines = requireDirectory(module, './mines');
 
-    resetLogFile(logFile);
+    await Promise.all(Object.keys(mines).map(async (key) => {
+      const mine = mines[key].default;
 
-    const mineScore = await runner.run(mine, logFile, config.yStart[key] || 0);
-    const valid = await validator.validate(mine, logFile, mineScore);
-
-    if (valid) {
-      console.log(`Map '${key}' score:`, mineScore);
-      totalScore += mineScore;
-    } else {
-      console.log('No cheating!');
-    }
-  }));
+      totalScore += await runMine(mine, key);
+    }));
+  }
 
   console.log('Final score:', totalScore);
 })();

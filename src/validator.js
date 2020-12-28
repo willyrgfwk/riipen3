@@ -17,6 +17,7 @@ const validate = async (mine, logFile, mineScore) => {
   if (!mine) throw new Error('a mine is required')
   if (!logFile) throw new Error('a logFile is required')
 
+
   const lineReader = readline.createInterface({
     input: fs.createReadStream(logFile)
   });

@@ -2,19 +2,33 @@
 
 Riipen's technical interview "Gold Mine" problem.
 
-# Problem
+# Exercise
 
-Given a gold mine of n * m dimensions, each field in this mine contains a positive integer
-which is the amount of gold. Initially the miner is at first column but can be at any row.
+Given a gold mine of n * m dimensions, design an algorithm for a gold miner to collect
+as much gold as possible. Each field in this mine contains a positive integer
+which is the amount of gold in that space. The miner starts at the first column but can be at any row.
 The miner can only move right, diagonally right and up, or diagonally right and down.
 
-Design an algorithm to collect the most gold possible on any given mine.
+![Gole min diagram](https://drive.google.com/file/d/1iXVl87ifBZffWqk-lDnjtzHHBJOjOd3x/view?usp=sharing)
 
-If the miner leaves the mine for any reason (goes outside the dimensions of the mine), the run
+If the miner leaves the mine for any reason (goes outside the dimensions of the mine), gold collection
 will cease and the final score will be the current score.
 
-If the miner lands on a section of the mine that has zero gold (an integer value of 0), the
-run will cease and the final score will be the current score.
+If the miner lands on a section of the mine that has zero gold (an integer value of 0), gold
+collection will cease and the final score will be the current score.
+
+# Rules
+
+- There is no time limit
+- Use your best discretion with the design of your solution
+- You can ask questions
+- You are free to add packages, tools, or improvements as you see fit
+- We expect you write the kind of feature you would put into production, including tests and documentation as you see fit
+
+# Submission
+
+Fork this repository to your Github account. Make any of the changes you wish to make,
+then submit a pull request back up stream to this repository.
 
 # Setup
 
@@ -42,7 +56,7 @@ npm install
 
 ## Run
 
-To run the miner through the mine:
+To run the miner through all mines:
 
 ```bash
 $ npm start
@@ -50,19 +64,26 @@ $ npm start
 
 This will give you your score per mine, as well as your final score.
 
-# Your Work
+To run the miner through a specific mine:
 
-The current naive approach to mining can be found in `src/runner.js` inside of the
-`move` function. Your job will be to improve upon the existing implementation in order
+```bash
+$ npm run mine -- jupiter
+```
+
+This will run the miner through the "jupiter" mine. (All mines can be found
+in the `mines/` directory.)
+
+# Architecture
+
+The current naive approach to mining can be found in `src/move.js`.
+Your job will be to improve upon the existing implementation in order
 to collect as much gold as possible.
 
-Feel free to add any technologies you wish to the code base. This could include:
+You should not need to touch any of the other existing files.
 
-1. New `npm` packages
-2. Testing frameworks
-3. Documentation generation tools
-4. Linting tools
-5. etc.
+If you wish to start your miner at a particular row of a given mine, you
+can change the `config.js` file to fit your needs.
 
-You will be judged not only on your final score, but your ability to explain your logic
-behind choices you make in implementation, as well as code quality.
+# Contact
+
+We encourage you to use your best discretion, but also to ask questions and communicate if you need it.
