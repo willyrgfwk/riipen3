@@ -39,7 +39,7 @@ const runMine = async (mine, name) => {
   const valid = await validator.validate(mine, logFile, mineScore);
 
   if (valid) {
-    console.log(`Map '${name}' score:`, mineScore);
+    console.log(`Mine '${name}' score:`, mineScore);
     return mineScore;
   }
 
@@ -57,9 +57,14 @@ const runMine = async (mine, name) => {
     // Run a single mine
     const name = process.argv.slice(2)[0];
 
-    const mine = require(`./mines/${name}.js`).default;
+    try {
+      const mine = require(`./mines/${name}.js`).default;
 
-    totalScore += await runMine(mine, name);
+      totalScore += await runMine(mine, name);
+    } catch (error) {
+      console.error('Invalid mine name');
+    }
+
   } else {
     // Run all mines
     const mines = requireDirectory(module, './mines');

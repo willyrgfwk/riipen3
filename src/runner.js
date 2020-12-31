@@ -16,19 +16,19 @@ const run = async (mine, logFile, yStart = 0) => {
   if (!mine) throw new Error('a mine is required')
   if (!logFile) throw new Error('a logFile is required')
 
-  // A running tally of the score
-  let score = 0;
-
   // The starting position for the miner
   let position = new Position(0, yStart);
+
+  // A running tally of the score
+  let score = mine[position.y][position.x];
 
   // Log the starting position because we only log again after each move
   log(logFile, position);
 
   while(position.x < mine[0].length - 1 && position.isValid(mine)) {
-    score += mine[position.y][position.x];
-
     position = await move(mine, position);
+
+    score += mine[position.y][position.x];
 
     log(logFile, position);
   }
