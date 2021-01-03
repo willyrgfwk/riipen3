@@ -48,7 +48,7 @@ const runMine = async (mine, name) => {
   return 0;
 };
 
-(async () => {
+const main = async () => {
   console.log("Riipen Gold Miner");
 
   // Keep track of the total score.
@@ -69,14 +69,24 @@ const runMine = async (mine, name) => {
     // Run all mines
     const mines = requireDirectory(module, "./mines");
 
-    await Promise.all(
+    const scores = await Promise.all(
       Object.keys(mines).map(async key => {
         const mine = mines[key].default;
 
-        totalScore += await runMine(mine, key);
+        return runMine(mine, key);
       })
     );
+
+    totalScore = scores.reduce((cur, acc) => cur + acc, 0);
   }
 
   console.log("Final score:", totalScore);
+};
+
+(async () => {
+  try {
+    await main();
+  } catch (e) {
+    console.error(e);
+  }
 })();
