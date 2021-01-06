@@ -1,9 +1,12 @@
-import fs from 'fs';
-import requireDirectory from 'require-directory';
+import fs from "fs";
+import path from "path";
+import requireDirectory from "require-directory";
 
-import config from './config.js';
-import runner from './src/runner.js';
-import validator from './src/validator.js';
+import config from "./config.js";
+import runner from "./src/runner.js";
+import validator from "./src/validator.js";
+
+const LOG_DIR = "logs";
 
 /**
  * Given a file name, deletes any existing file and creates a new blank one.
@@ -12,15 +15,13 @@ import validator from './src/validator.js';
  *
  * @return {undefined}
  */
-const resetLogFile = (logFile) => {
-  try {
-    fs.unlinkSync(logFile);
-  } catch (error) {
-    // Do nothing
+const resetLogFile = logFile => {
+  if (!fs.existsSync(LOG_DIR)) {
+    fs.mkdirSync(LOG_DIR);
   }
 
-  fs.closeSync(fs.openSync(logFile, 'w'));
-}
+  fs.writeFileSync(logFile, "");
+};
 
 /**
  * Given a mine, a name, and a logFile, runs the miner through the mine.
@@ -31,7 +32,7 @@ const resetLogFile = (logFile) => {
  * @return {number} The score achieved in the mine.
  */
 const runMine = async (mine, name) => {
-  const logFile = `./logs/${name}.txt`;
+  const logFile = path.join(__dirname, LOG_DIR, `${name}.txt`);
 
   resetLogFile(logFile);
 
@@ -43,12 +44,12 @@ const runMine = async (mine, name) => {
     return mineScore;
   }
 
-  console.log('No cheating!');
+  console.log("No cheating!");
   return 0;
-}
+};
 
-(async () => {
-  console.log('Riipen Gold Miner');
+const main = async () => {
+  console.log("Riipen Gold Miner");
 
   // Keep track of the total score.
   let totalScore = 0;
@@ -62,19 +63,30 @@ const runMine = async (mine, name) => {
 
       totalScore += await runMine(mine, name);
     } catch (error) {
-      console.error('Invalid mine name');
+      console.error("Invalid mine name");
     }
-
   } else {
     // Run all mines
-    const mines = requireDirectory(module, './mines');
+    const mines = requireDirectory(module, "./mines");
 
-    await Promise.all(Object.keys(mines).map(async (key) => {
-      const mine = mines[key].default;
+    const scores = await Promise.all(
+      Object.keys(mines).map(async key => {
+        const mine = mines[key].default;
 
-      totalScore += await runMine(mine, key);
-    }));
+        return runMine(mine, key);
+      })
+    );
+
+    totalScore = scores.reduce((cur, acc) => cur + acc, 0);
   }
 
-  console.log('Final score:', totalScore);
+  console.log("Final score:", totalScore);
+};
+
+(async () => {
+  try {
+    await main();
+  } catch (e) {
+    console.error(e);
+  }
 })();

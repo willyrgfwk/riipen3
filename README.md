@@ -4,12 +4,12 @@ Riipen's technical interview "Gold Mine" problem.
 
 # Exercise
 
-Given a gold mine of n * m dimensions, design an algorithm for a gold miner to collect
+Given a gold mine of n \* m dimensions, design an algorithm for a gold miner to collect
 as much gold as possible. Each field in this mine contains a positive integer
 which is the amount of gold in that space. The miner starts at the first column but can be at any row.
 The miner can only move right, diagonally right and up, or diagonally right and down.
 
-![Gold min diagram](https://i.imgur.com/pmb9XCA.png "Gold Mine Diagram")
+![Gold mine diagram](https://i.imgur.com/pmb9XCA.png "Gold Mine Diagram")
 
 If the miner leaves the mine for any reason (goes outside the dimensions of the mine), gold collection
 will cease and the final score will be the current score.
