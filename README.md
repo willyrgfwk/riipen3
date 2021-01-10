@@ -81,9 +81,6 @@ to collect as much gold as possible.
 
 You should not need to touch any of the other existing files.
 
-If you wish to start your miner at a particular row of a given mine, you
-can change the `config.js` file to fit your needs.
-
 # Contact
 
 We encourage you to use your best discretion, but also to ask questions and communicate if you need it.

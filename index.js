@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 import requireDirectory from "require-directory";
 
-import config from "./config.js";
 import runner from "./src/runner.js";
 import validator from "./src/validator.js";
 
@@ -36,7 +35,7 @@ const runMine = async (mine, name) => {
 
   resetLogFile(logFile);
 
-  const mineScore = await runner.run(mine, logFile, config.yStart[name] || 0);
+  const mineScore = await runner.run(mine, logFile);
   const valid = await validator.validate(mine, logFile, mineScore);
 
   if (valid) {
@@ -57,27 +56,15 @@ const main = async () => {
   if (process.argv.slice(2).length > 0) {
     // Run a single mine
     const name = process.argv.slice(2)[0];
-
-    try {
-      const mine = require(`./mines/${name}.js`).default;
-
-      totalScore += await runMine(mine, name);
-    } catch (error) {
-      console.error("Invalid mine name");
-    }
+    const mine = require(`./mines/${name}.js`).default;
+    totalScore += await runMine(mine, name);
   } else {
     // Run all mines
-    const mines = requireDirectory(module, "./mines");
+    const mines = Object.entries(requireDirectory(module, "./mines"));
 
-    const scores = await Promise.all(
-      Object.keys(mines).map(async key => {
-        const mine = mines[key].default;
-
-        return runMine(mine, key);
-      })
-    );
-
-    totalScore = scores.reduce((cur, acc) => cur + acc, 0);
+    for (const [k, mine] of mines) {
+      totalScore += await runMine(mine.default, k);
+    }
   }
 
   console.log("Final score:", totalScore);

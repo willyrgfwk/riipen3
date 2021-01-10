@@ -1,7 +1,6 @@
 import fs from "fs";
 
 import move from "./move.js";
-import Position from "./position.js";
 
 /**
  * Given a mine, runs the miner through the mine collecting gold along the way.
@@ -16,21 +15,30 @@ const run = async (mine, logFile, yStart = 0) => {
   if (!mine) throw new Error("a mine is required");
   if (!logFile) throw new Error("a logFile is required");
 
-  // The starting position for the miner
-  let position = new Position(0, yStart);
+  // Initial position
+  let position = await move(mine);
+
+  // Track where the current X value should be
+  let currentX = 0;
 
   // A running tally of the score
   let score = mine[position.y][position.x];
 
-  // Log the starting position because we only log again after each move
+  // log the initial position
   log(logFile, position);
 
   while (position.x < mine[0].length - 1 && position.isValid(mine)) {
-    position = await move(mine, position);
+    if (position.x !== currentX) {
+      throw new Error(
+        `Current position must be at x === ${currentX}, not ${position}`
+      );
+    }
 
-    score += mine[position.y][position.x];
+    position = await move(mine, position);
+    currentX++;
 
     log(logFile, position);
+    score += mine[position.y][position.x];
   }
 
   return score;

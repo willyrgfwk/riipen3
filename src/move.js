@@ -1,4 +1,4 @@
-import Position from './position.js';
+import Position from "./position.js";
 
 /**
  * Replace the logic in this function with your own custom movement algorithm.
@@ -10,14 +10,19 @@ import Position from './position.js';
  * completing.
  *
  * @param  {array} mine - A n x m multidimensional array respresenting the mine.
- * @param  {object} position - The current position of the miner.
+ * @param  {object} position - The current position of the miner, will be undefined on the first move
  *
  * @return {Position} The new position of the miner.
  */
 const move = (mine, position) => {
-  // TODO: write logic for miner. The current approach is as naive as possible, simply
-  // moving the miner to the right.
-  return new Position(position.x + 1, position.y);
+  // TODO: write logic for miner. The current approach naive approach is to simply:
+  //   1. Start at (0,0)
+  //   2. Always moves right
+
+  const newX = (position && position.x + 1) || 0;
+  const newY = (position && position.y) || 0;
+
+  return new Position(newX, newY);
 };
 
 export default move;
