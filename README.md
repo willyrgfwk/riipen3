@@ -30,6 +30,9 @@ collection will cease and the final score will be the current score.
 Fork this repository to your Github account. Make any of the changes you wish to make,
 then submit a pull request back up stream to this repository.
 
+If you can score in the top 10 of all time submissions, your name will be added to our
+[leader board](https://github.com/riipen/gold-mine/wiki/Leader-Board).
+
 # Setup
 
 ## Node
