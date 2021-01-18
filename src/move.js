@@ -1,13 +1,15 @@
 import Position from "./position.js";
 
+let movedRight;
+
 /**
  * Replace the logic in this function with your own custom movement algorithm.
  *
  * This function should run in a reasonable amount of time and should attempt
  * to collect as much gold as possible.
  *
- * Remember, invalid moves, or landing on a "0" on the mine will result in the run
- * completing.
+ * Remember, landing outside the mine's boundary or on a "0" on the mine will
+ * result in the run completing.
  *
  * @param  {array} mine - A n x m multidimensional array respresenting the mine.
  * @param  {object} position - The current position of the miner, will be undefined on the first move
@@ -20,7 +22,18 @@ const move = (mine, position) => {
   //   2. Always moves right
 
   const newX = (position && position.x + 1) || 0;
-  const newY = (position && position.y) || 0;
+
+  let newY;
+
+  if (!movedRight) {
+    newY = (position && position.y) || 0;
+
+    movedRight = true;
+  } else {
+    newY = (position && position.y + 1) || 0;
+
+    movedRight = false;
+  }
 
   return new Position(newX, newY);
 };
